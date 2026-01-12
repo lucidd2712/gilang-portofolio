@@ -1,0 +1,37 @@
+---
+import { getCollection } from "astro:content";
+const projects = await getCollection("projects");
+projects.sort((a, b) => b.data.year - a.data.year);
+---
+
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Proyek</title>
+  </head>
+  <body>
+    <main style="max-width: 900px; margin: 40px auto; padding: 0 16px; font-family: system-ui;">
+      <h1>Proyek</h1>
+      <p>Daftar proyek yang pernah saya kerjakan.</p>
+
+      <ol>
+        {projects.map((p) => (
+          <li style="margin: 14px 0;">
+            <a href={`/projects/${p.slug}/`} style="font-weight: 600;">
+              {p.data.title}
+            </a>
+            <div style="opacity: 0.8; font-size: 14px;">
+              {p.data.year}{p.data.role ? ` • ${p.data.role}` : ""}
+            </div>
+            <div style="margin-top: 6px;">
+              {p.data.summary}
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p><a href="/">Kembali ke Beranda</a></p>
+    </main>
+  </body>
+</html>

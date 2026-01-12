@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((p) => ({
+    params: { slug: p.slug },
+    props: { project: p },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+---
+
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{project.data.title}</title>
+  </head>
+  <body>
+    <main style="max-width: 900px; margin: 40px auto; padding: 0 16px; font-family: system-ui;">
+      <p><a href="/projects/">← Kembali</a></p>
+      <h1>{project.data.title}</h1>
+      <div style="opacity: 0.8; margin-bottom: 16px;">
+        {project.data.year}{project.data.role ? ` • ${project.data.role}` : ""}
+      </div>
+
+      <section style="margin: 16px 0;">
+        <strong>Ringkasan:</strong> {project.data.summary}
+      </section>
+
+      <section style="margin: 16px 0;">
+        <strong>Teknologi:</strong>
+        <ol>
+          {project.data.tech.map((t) => <li>{t}</li>)}
+        </ol>
+      </section>
+
+      <section style="margin: 16px 0;">
+        <strong>Detail:</strong>
+        <div style="margin-top: 10px;">
+          <Content />
+        </div>
+      </section>
+
+      {project.data.links ? (
+        <section style="margin: 16px 0;">
+          <strong>Tautan:</strong>
+          <ol>
+            {project.data.links.repo ? <li><a href={project.data.links.repo} target="_blank">Repo</a></li> : null}
+            {project.data.links.demo ? <li><a href={project.data.links.demo} target="_blank">Demo</a></li> : null}
+          </ol>
+        </section>
+      ) : null}
+    </main>
+  </body>
+</html>
