@@ -1,0 +1,50 @@
+---
+import Container from "../ui/Container.astro";
+import SectionHead from "../ui/SectionHead.astro";
+import Card from "../ui/Card.astro";
+import Button from "../ui/Button.astro";
+import Badge from "../ui/Badge.astro";
+import { getCollection } from "astro:content";
+
+const all = await getCollection("achievements");
+const items = all
+  .sort((a, b) => (b.data.date?.valueOf?.() ?? 0) - (a.data.date?.valueOf?.() ?? 0))
+  .slice(0, 6);
+---
+<section id="achievements" class="section">
+  <Container>
+    <SectionHead title="Achievements" subtitle="Prestasi, sertifikasi, lomba, atau publikasi." />
+
+    <div class="grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+      {items.map((a) => (
+        <Card>
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+            <div>
+              <div style="font-weight:850">{a.data.title}</div>
+              <div class="muted" style="font-size:13px; margin-top:6px">
+                {a.data.org ? a.data.org : "—"}{a.data.date ? ` • ${a.data.date.toISOString().slice(0,10)}` : ""}
+              </div>
+              {a.data.description ? (
+                <div class="muted" style="font-size:13px; margin-top:8px">{a.data.description}</div>
+              ) : null}
+            </div>
+            <Badge>Proof</Badge>
+          </div>
+
+          <div style="height:12px"></div>
+          {a.data.proof ? (
+            <Button href={a.data.proof} target="_blank" variant="secondary">Buka bukti</Button>
+          ) : (
+            <span class="muted" style="font-size:13px">Belum ada link bukti</span>
+          )}
+        </Card>
+      ))}
+    </div>
+
+    <style>
+      @media (max-width: 920px){
+        .grid[style*="repeat(2"]{ grid-template-columns: 1fr !important; }
+      }
+    </style>
+  </Container>
+</section>

@@ -1,0 +1,60 @@
+---
+import Container from "../ui/Container.astro";
+import Button from "../ui/Button.astro";
+import Badge from "../ui/Badge.astro";
+import { site } from "../../config/site";
+---
+<header class="navbar">
+  <Container>
+    <div class="nav-inner">
+      <a class="nav-brand" href="/">
+        <span style="display:inline-flex; width:34px; height:34px; border-radius:12px; background:rgba(66,179,255,.18); border:1px solid rgba(66,179,255,.35); align-items:center; justify-content:center;">
+          <span style="width:10px;height:10px;border-radius:99px;background:var(--primary)"></span>
+        </span>
+        <div>
+          <div style="line-height:1.1">{site.name}</div>
+          <div class="muted" style="font-size:12px">{site.location}</div>
+        </div>
+      </a>
+
+      <nav class="nav-links" aria-label="Navigasi utama">
+        <a href="#about">About</a>
+        <a href="#focus">Focus</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#contact">Contact</a>
+        <Button href={site.resumeUrl} variant="primary" target="_blank">CV</Button>
+      </nav>
+
+      <div class="nav-toggle">
+        <Button variant="secondary" class="nav-toggle" id="navToggle">Menu</Button>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="mobile-menu" aria-label="Menu mobile">
+      <a href="#about">About</a>
+      <a href="#focus">Focus</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#contact">Contact</a>
+      <div style="padding:14px 0">
+        <Badge>Download</Badge>
+        <div style="height:10px"></div>
+        <Button href={site.resumeUrl} variant="primary" target="_blank" style="width:100%">CV</Button>
+      </div>
+    </div>
+  </Container>
+
+  <script is:inline>
+    const btn = document.getElementById("navToggle");
+    const menu = document.getElementById("mobileMenu");
+    btn?.addEventListener("click", () => {
+      menu?.classList.toggle("open");
+    });
+    menu?.querySelectorAll("a")?.forEach(a => {
+      a.addEventListener("click", () => menu?.classList.remove("open"));
+    });
+  </script>
+</header>

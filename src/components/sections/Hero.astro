@@ -1,0 +1,91 @@
+---
+import Container from "../ui/Container.astro";
+import Button from "../ui/Button.astro";
+import Badge from "../ui/Badge.astro";
+import Card from "../ui/Card.astro";
+import { site } from "../../config/site";
+---
+<section class="section">
+  <Container>
+    <div class="two-col">
+      <div>
+        <Badge>Portfolio • {site.headline}</Badge>
+        <div style="height:12px"></div>
+        <h1 class="h1">{site.hero.title}</h1>
+        <p class="lead">{site.hero.subtitle}</p>
+
+        <div style="height:16px"></div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          {site.hero.ctas.map((c) => (
+            <Button href={c.href} variant={c.variant as any}>{c.label}</Button>
+          ))}
+        </div>
+
+        <div style="height:18px"></div>
+        <div class="grid" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+          {site.hero.quickFacts.map((q) => (
+            <div class="card" style="border-radius: var(--radius-sm);">
+              <div class="card-inner">
+                <div class="muted" style="font-size:12px">{q.k}</div>
+                <div style="font-weight:650">{q.v}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <style>
+          @media (max-width: 720px){
+            .grid[style*="repeat(3"]{ grid-template-columns: 1fr; }
+          }
+        </style>
+      </div>
+
+      <div>
+        <Card>
+          <div style="display:flex; gap:14px; align-items:center;">
+            <img
+              src={site.avatar}
+              alt={`Foto ${site.name}`}
+              width="64"
+              height="64"
+              style="border-radius:16px; border:1px solid rgba(255,255,255,.14); object-fit:cover;"
+              loading="lazy"
+            />
+            <div>
+              <div style="font-weight:750; font-size:16px">{site.name}</div>
+              <div class="muted" style="font-size:13px">{site.headline}</div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="grid" style="grid-template-columns: 1fr; gap:10px;">
+            <div class="card" style="border-radius: var(--radius-sm); background: rgba(255,255,255,.05);">
+              <div class="card-inner">
+                <div class="muted" style="font-size:12px">Email</div>
+                <div style="font-weight:650">{site.email}</div>
+              </div>
+            </div>
+
+            <div class="card" style="border-radius: var(--radius-sm); background: rgba(255,255,255,.05);">
+              <div class="card-inner">
+                <div class="muted" style="font-size:12px">Link utama</div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+                  <Button href={site.socials.github} variant="secondary" target="_blank">GitHub</Button>
+                  <Button href={site.socials.linkedin} variant="secondary" target="_blank">LinkedIn</Button>
+                  <Button href={site.socials.kaggle} variant="ghost" target="_blank">Kaggle</Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <div style="height:12px"></div>
+        <div class="card" style="padding:14px; border-radius: var(--radius);">
+          <div class="muted" style="font-size:13px">
+            Catatan: semua halaman ini dibuat statis (aman), tidak ada third-party script yang “aneh”, dan link eksternal sudah pakai rel yang aman.
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

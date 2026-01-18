@@ -1,0 +1,33 @@
+---
+import Container from "../ui/Container.astro";
+import SectionHead from "../ui/SectionHead.astro";
+import Card from "../ui/Card.astro";
+import Badge from "../ui/Badge.astro";
+import { site } from "../../config/site";
+---
+<section id="skills" class="section">
+  <Container>
+    <SectionHead title="Skills" subtitle="Disusun per domain supaya terlihat matang, bukan acak." />
+
+    <div class="grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+      {Object.entries(site.skills).map(([group, items]) => (
+        <Card>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+            <div style="font-weight:800">{group}</div>
+            <Badge>{items.length} item</Badge>
+          </div>
+          <div style="height:12px"></div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            {items.map((it) => <span class="badge">{it}</span>)}
+          </div>
+        </Card>
+      ))}
+    </div>
+
+    <style>
+      @media (max-width: 920px){
+        .grid[style*="repeat(2"]{ grid-template-columns: 1fr !important; }
+      }
+    </style>
+  </Container>
+</section>

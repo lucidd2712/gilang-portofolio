@@ -1,0 +1,14 @@
+---
+import Container from "../ui/Container.astro";
+import { site } from "../../config/site";
+---
+<footer style="padding: 24px 0; border-top: 1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.10);">
+  <Container>
+    <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+      <div class="muted" style="font-size:13px">© {new Date().getFullYear()} {site.name}. All rights reserved.</div>
+      <div class="muted" style="font-size:13px">
+        Built with Astro • Blue/White Tech Theme
+      </div>
+    </div>
+  </Container>
+</footer>

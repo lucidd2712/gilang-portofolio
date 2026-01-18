@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/ui/Container.astro";
+import Card from "../../components/ui/Card.astro";
+import Button from "../../components/ui/Button.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+---
+<BaseLayout title={`${project.data.title} | Project`} description={project.data.description}>
+  <section class="section">
+    <Container>
+      <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center;">
+        <div>
+          <h1 class="h1" style="font-size:34px">{project.data.title}</h1>
+          <p class="lead">{project.data.description}</p>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <Button href="/projects" variant="secondary">Kembali</Button>
+          {project.data.links?.demo ? <Button href={project.data.links.demo} target="_blank" variant="primary">Demo</Button> : null}
+          {project.data.links?.repo ? <Button href={project.data.links.repo} target="_blank" variant="ghost">Repo</Button> : null}
+        </div>
+      </div>
+
+      <div style="height:16px"></div>
+      <Card>
+        <article class="muted" style="font-size:15px">
+          <Content />
+        </article>
+      </Card>
+    </Container>
+  </section>
+</BaseLayout>

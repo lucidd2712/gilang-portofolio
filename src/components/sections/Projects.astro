@@ -1,0 +1,73 @@
+---
+import Container from "../ui/Container.astro";
+import SectionHead from "../ui/SectionHead.astro";
+import Card from "../ui/Card.astro";
+import Button from "../ui/Button.astro";
+import Badge from "../ui/Badge.astro";
+import { getCollection } from "astro:content";
+
+const all = await getCollection("projects");
+const featured = all
+  .filter((p) => p.data.featured)
+  .sort((a, b) => (b.data.date?.valueOf?.() ?? 0) - (a.data.date?.valueOf?.() ?? 0))
+  .slice(0, 6);
+
+const items = featured.length ? featured : all.slice(0, 6);
+---
+<section id="projects" class="section">
+  <Container>
+    <SectionHead
+      title="Projects"
+      subtitle="Pilih 4–6 project yang paling representatif. Sisanya taruh di halaman /projects."
+    />
+
+    <div class="grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+      {items.map((p) => (
+        <Card>
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            {p.data.cover ? (
+              <img
+                src={p.data.cover}
+                alt={p.data.title}
+                width="120"
+                height="84"
+                style="border-radius:14px; border:1px solid rgba(255,255,255,.12); object-fit:cover;"
+                loading="lazy"
+              />
+            ) : (
+              <div style="width:120px;height:84px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05)"></div>
+            )}
+
+            <div style="flex:1">
+              <div style="font-weight:850">{p.data.title}</div>
+              <div class="muted" style="font-size:13px; margin-top:6px">{p.data.description}</div>
+
+              <div style="height:10px"></div>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                {p.data.tags.slice(0, 4).map((t) => <span class="badge">{t}</span>)}
+              </div>
+
+              <div style="height:12px"></div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <Button href={`/projects/${p.slug}`} variant="secondary">Detail</Button>
+                {p.data.links?.demo ? <Button href={p.data.links.demo} target="_blank" variant="primary">Demo</Button> : null}
+                {p.data.links?.repo ? <Button href={p.data.links.repo} target="_blank" variant="ghost">Repo</Button> : null}
+              </div>
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
+
+    <div style="height:14px"></div>
+    <div style="display:flex; justify-content:flex-end;">
+      <Button href="/projects" variant="ghost">Lihat semua project</Button>
+    </div>
+
+    <style>
+      @media (max-width: 920px){
+        .grid[style*="repeat(2"]{ grid-template-columns: 1fr !important; }
+      }
+    </style>
+  </Container>
+</section>

@@ -1,0 +1,6 @@
+---
+const { class: className = "" } = Astro.props;
+---
+<span class={`badge ${className}`}>
+  <slot />
+</span>

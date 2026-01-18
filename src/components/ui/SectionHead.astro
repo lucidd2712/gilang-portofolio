@@ -1,0 +1,14 @@
+---
+const { title, subtitle, right } = Astro.props as {
+  title: string;
+  subtitle?: string;
+  right?: string;
+};
+---
+<div class="section-head">
+  <div>
+    <h2 class="section-title">{title}</h2>
+    {subtitle ? <p class="section-subtitle">{subtitle}</p> : null}
+  </div>
+  {right ? <div>{right}</div> : <div />}
+</div>

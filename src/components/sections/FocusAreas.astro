@@ -1,0 +1,40 @@
+---
+import Container from "../ui/Container.astro";
+import SectionHead from "../ui/SectionHead.astro";
+import Card from "../ui/Card.astro";
+import Badge from "../ui/Badge.astro";
+import { site } from "../../config/site";
+---
+<section id="focus" class="section">
+  <Container>
+    <SectionHead
+      title="Focus Areas"
+      subtitle="Area yang kamu kuasai, ditulis seperti value proposition (bukan sekadar daftar skill)."
+    />
+
+    <div class="grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+      {site.focusAreas.map((f) => (
+        <Card>
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+            <div>
+              <div style="font-weight:800; font-size:16px">{f.title}</div>
+              <div class="muted" style="font-size:13px; margin-top:6px">{f.desc}</div>
+            </div>
+            <Badge>Core</Badge>
+          </div>
+
+          <div style="height:12px"></div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            {f.bullets.map((b) => <span class="badge">{b}</span>)}
+          </div>
+        </Card>
+      ))}
+    </div>
+
+    <style>
+      @media (max-width: 920px){
+        .grid[style*="repeat(2"]{ grid-template-columns: 1fr !important; }
+      }
+    </style>
+  </Container>
+</section>
