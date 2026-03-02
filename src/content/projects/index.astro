@@ -1,33 +1,37 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Container from "../../components/ui/Container.astro";
-import SectionHead from "../../components/ui/SectionHead.astro";
-import Card from "../../components/ui/Card.astro";
-import Button from "../../components/ui/Button.astro";
 import { getCollection } from "astro:content";
-
-const all = await getCollection("projects");
-const items = all.sort((a,b) => (b.data.date?.valueOf?.() ?? 0) - (a.data.date?.valueOf?.() ?? 0));
+const projects = await getCollection("projects");
+projects.sort((a, b) => b.data.year - a.data.year);
 ---
-<BaseLayout title="Projects | Portfolio" description="Daftar project">
-  <section class="section">
-    <Container>
-      <SectionHead title="All Projects" subtitle="Semua project yang kamu dokumentasikan." />
-      <div class="grid" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
-        {items.map((p) => (
-          <Card>
-            <div style="font-weight:850">{p.data.title}</div>
-            <div class="muted" style="font-size:13px; margin-top:6px">{p.data.description}</div>
-            <div style="height:12px"></div>
-            <Button href={`/projects/${p.slug}`} variant="primary">Buka detail</Button>
-          </Card>
+
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Proyek</title>
+  </head>
+  <body>
+    <main style="max-width: 900px; margin: 40px auto; padding: 0 16px; font-family: system-ui;">
+      <h1>Proyek</h1>
+      <p>Daftar proyek yang pernah saya kerjakan.</p>
+
+      <ol>
+        {projects.map((p) => (
+          <li style="margin: 14px 0;">
+            <a href={`/projects/${p.slug}/`} style="font-weight: 600;">
+              {p.data.title}
+            </a>
+            <div style="opacity: 0.8; font-size: 14px;">
+              {p.data.year}{p.data.role ? ` • ${p.data.role}` : ""}
+            </div>
+            <div style="margin-top: 6px;">
+              {p.data.summary}
+            </div>
+          </li>
         ))}
-      </div>
-      <style>
-        @media (max-width: 920px){
-          .grid[style*="repeat(2"]{ grid-template-columns: 1fr !important; }
-        }
-      </style>
-    </Container>
-  </section>
-</BaseLayout>
+      </ol>
+
+      <p><a href="/">Kembali ke Beranda</a></p>
+    </main>
+  </body>
+</html>
